@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#05140d">
-<title>炸金花 - 极致沉浸版</title>
+<title>炸金花 - 沉浸赌局</title>
 <style>
-/* ================= 基础与材质 ================= */
+/* ================= 基础 ================= */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
   margin: 0; padding: 0; width: 100%; height: 100%;
@@ -28,7 +28,7 @@ html, body {
 
 .app { height: 100%; width: 100%; display: flex; flex-direction: column; background: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #000000 100%); }
 
-/* ================= 顶部信息栏 ================= */
+/* ================= 顶部栏 ================= */
 .topbar {
   height: 40px; background: linear-gradient(180deg, #111 0%, #050505 100%);
   border-bottom: 1px solid #333; box-shadow: 0 4px 12px rgba(0,0,0,0.8);
@@ -44,12 +44,11 @@ html, body {
 }
 .icon-btn:active { background: #000; transform: scale(0.95); }
 
-/* ================= 赌桌区域 ================= */
+/* ================= 赌桌 ================= */
 .game { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 
-/* 真实绒布桌面 */
 .felt {
-  position: absolute; left: 10%; right: 10%; top: 15%; bottom: 20%;
+  position: absolute; left: 10%; right: 10%; top: 12%; bottom: 22%;
   border-radius: 48% / 50%; background-color: #0c3b27;
   background-image: 
     radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.15) 0%, transparent 60%),
@@ -62,149 +61,147 @@ html, body {
   border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05); pointer-events: none;
 }
 
-/* ================= 座位与 2D动漫头像 ================= */
-.seat { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+/* ================= 座位与二次元人物 ================= */
+.seat { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; transition: all 0.3s; }
 .seat.active::before {
   content: ''; position: absolute; inset: -20px; border-radius: 50%;
   background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
   z-index: -1; animation: pulse-light 2s infinite alternate;
 }
 @keyframes pulse-light { from { opacity: 0.5; transform: scale(0.9); } to { opacity: 1; transform: scale(1.1); } }
-.seat.folded { opacity: 0.35; filter: grayscale(1) blur(1px); }
+.seat.folded { opacity: 0.35; filter: grayscale(1); }
 
-/* 二次元头像框 */
-.avatar {
-  width: 50px; height: 50px; border-radius: 50%;
-  background: #111; border: 2px solid #4a3b1c; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.6);
-  transition: all 0.3s; flex-shrink: 0;
+/* 立绘框 */
+.character {
+  width: 60px; height: 80px; border-radius: 8px 8px 0 0; overflow: hidden;
+  background: linear-gradient(180deg, #222 0%, #050505 100%);
+  border: 1px solid #4a3b1c; border-bottom: none;
+  box-shadow: 0 0 15px rgba(0,0,0,0.8);
+  display: flex; align-items: flex-end; justify-content: center;
+  position: relative;
 }
-.seat.active .avatar { border-color: #d4af37; box-shadow: 0 0 15px rgba(212,175,55,0.4), 0 4px 10px rgba(0,0,0,0.6); }
-.avatar svg { width: 100%; height: 100%; object-fit: cover; }
+.seat.active .character { border-color: #d4af37; box-shadow: 0 -5px 20px rgba(212,175,55,0.3); }
+.character svg { width: 100%; height: 100%; }
 
-.seat .name { font-size: 12px; font-weight: 600; color: #aaa; text-shadow: 0 2px 4px #000; letter-spacing: 0.5px; }
-.seat.active .name { color: #d4af37; }
-.seat .chips { font-size: 12px; color: #d4af37; font-weight: bold; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 10px; border: 1px solid #333; display: flex; align-items: center; gap: 4px; }
-.seat .chips .coin-icon { width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffe066, #b8860b); box-shadow: inset 0 0 2px #000; }
+/* 名字和筹码小面板 */
+.info-panel {
+  width: 80px; background: rgba(0,0,0,0.85); border: 1px solid #333;
+  border-radius: 0 0 8px 8px; padding: 4px 0; text-align: center;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.seat.active .info-panel { border-color: #d4af37; }
+.info-panel .name { font-size: 11px; font-weight: 600; color: #aaa; }
+.seat.active .info-panel .name { color: #d4af37; }
+.info-panel .chips { font-size: 11px; color: #d4af37; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 2px; }
+.info-panel .chips .coin-icon { width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffe066, #b8860b); }
+
+/* 卡牌位置 */
+.hand { display: flex; gap: 4px; justify-content: center; position: absolute; bottom: -60px; }
+.seat-top .hand { bottom: -60px; }
 
 /* ================= 高保真卡牌 ================= */
-.hand { display: flex; gap: 4px; justify-content: center; margin-top: 4px; }
-.card { width: 38px; height: 54px; border-radius: 5px; position: relative; transition: transform 0.2s; transform-style: preserve-3d; box-shadow: 1px 2px 4px rgba(0,0,0,0.6); }
+.card { width: 36px; height: 50px; border-radius: 4px; position: relative; box-shadow: 1px 2px 4px rgba(0,0,0,0.6); }
 .card.face {
   background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 50%, #e0e0e0 100%); border: 1px solid #bbb;
-  display: flex; flex-direction: column; justify-content: space-between; padding: 4px;
-  box-shadow: inset 1px 1px 2px rgba(255,255,255,1), inset -1px -1px 3px rgba(0,0,0,0.1), 1px 3px 6px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column; justify-content: space-between; padding: 3px;
 }
-.card.face .rank { font-family: "Times New Roman", Times, serif; font-size: 16px; font-weight: bold; line-height: 1; }
-.card.face .suit { font-size: 18px; line-height: 1; align-self: flex-end; margin-bottom: -2px; }
+.card.face .rank { font-family: "Times New Roman", Times, serif; font-size: 14px; font-weight: bold; line-height: 1; }
+.card.face .suit { font-size: 16px; line-height: 1; align-self: flex-end; margin-bottom: -2px; }
 .card.face.red { color: #c8102e; }
 .card.face.black { color: #111; }
 .card.back {
   background: #1a2a40; border: 1px solid #09101a;
-  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px), repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px), radial-gradient(circle at center, #2c4468 0%, #111e30 100%);
-  display: flex; align-items: center; justify-content: center;
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px), radial-gradient(circle at center, #2c4468 0%, #111e30 100%);
 }
-.card.back::after { content: ''; width: 24px; height: 34px; border: 1px solid rgba(212,175,55,0.4); border-radius: 2px; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 60%); }
 
 /* 座位位置 */
-.seat-top { top: -10px; left: 50%; transform: translateX(-50%); }
-.seat-left { left: 10px; top: 50%; transform: translateY(-50%); }
-.seat-right { right: 10px; top: 50%; transform: translateY(-50%); }
-.seat-bottom { bottom: -10px; left: 50%; transform: translateX(-50%); }
-.seat.active.seat-top, .seat.active.seat-bottom { transform: translateX(-50%) translateY(-4px); }
-.seat.active.seat-left { transform: translateY(-50%) translateX(4px); }
-.seat.active.seat-right { transform: translateY(-50%) translateX(-4px); }
+.seat-top { top: -20px; left: 50%; transform: translateX(-50%); }
+.seat-left { left: 20px; top: 50%; transform: translateY(-50%); flex-direction: row; }
+.seat-right { right: 20px; top: 50%; transform: translateY(-50%); flex-direction: row-reverse; }
+.seat-left .info-panel { border-radius: 0 8px 8px 0; border-left: none; width: 60px; height: 60px; display: flex; justify-content: center; }
+.seat-right .info-panel { border-radius: 8px 0 0 8px; border-right: none; width: 60px; height: 60px; display: flex; justify-content: center; }
+.seat-left .hand { bottom: -50px; left: 10px; }
+.seat-right .hand { bottom: -50px; right: 10px; }
 
-/* 我的大卡 */
-.seat-bottom .card { width: 60px; height: 84px; border-radius: 6px; padding: 6px; }
-.seat-bottom .card.face .rank { font-size: 24px; }
-.seat-bottom .card.face .suit { font-size: 28px; }
-.seat-bottom .card.back::after { width: 38px; height: 54px; }
+/* 我的区域 */
+.seat-bottom { bottom: -15px; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; width: 100%; }
+.seat-bottom .info-panel { flex-direction: row; width: 180px; border-radius: 8px; border: 1px solid #333; padding: 6px 12px; justify-content: space-between; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
+.seat-bottom .hand { position: relative; bottom: 10px; margin-bottom: 10px; }
+.seat-bottom .card { width: 56px; height: 78px; padding: 5px; border-radius: 6px; }
+.seat-bottom .card.face .rank { font-size: 22px; }
+.seat-bottom .card.face .suit { font-size: 24px; }
 
-/* 搓牌遮罩 */
-.card.scratch-mask { position: absolute; inset: 0; background: #111; border-radius: 5px; pointer-events: none; transition: opacity 0.1s; z-index: 2; }
+/* ================= 刮刮乐看牌 ================= */
+#scratchZone {
+  position: absolute; top: -15px; left: -15px; width: 198px; height: 108px;
+  z-index: 20; border-radius: 8px; cursor: crosshair; display: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.9);
+}
+.scratch-hint {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: rgba(212,175,55,0.6); font-size: 12px; font-weight: bold; pointer-events: none; z-index: 21;
+  text-shadow: 0 2px 4px #000; animation: hint-pulse 1.5s infinite alternate;
+}
+@keyframes hint-pulse { from { opacity: 0.5; } to { opacity: 1; } }
 
-/* 个人信息排版 */
-.seat-bottom { flex-direction: row; align-items: flex-end; gap: 12px; padding: 8px 16px; background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%); border-radius: 20px; }
-.you-info-col { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
-.you-name-row { display: flex; align-items: center; gap: 6px; }
-.you-status { font-size: 13px; color: #d4af37; font-weight: bold; font-family: "Times New Roman", serif; }
-.you-winrate { font-size: 11px; color: #4ade80; text-shadow: 0 0 5px rgba(74,222,128,0.4); }
+/* ================= 池底 ================= */
+.pot { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 50% 30%, #1a1a1a 0%, #050505 100%); border: 2px solid #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; }
+.pot-label { font-size: 10px; color: #888; letter-spacing: 2px; }
+.pot-amount { font-family: "Times New Roman", serif; font-size: 20px; font-weight: bold; color: #d4af37; }
 
-/* ================= 池底与第一人称手部 ================= */
-.pot { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: 90px; height: 90px; border-radius: 50%; background: radial-gradient(circle at 50% 30%, #1a1a1a 0%, #050505 100%); border: 2px solid #d4af37; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 0 20px rgba(212,175,55,0.2), 0 10px 20px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; }
-.pot-label { font-size: 10px; color: #888; letter-spacing: 2px; margin-bottom: 2px; }
-.pot-amount { font-family: "Times New Roman", serif; font-size: 22px; font-weight: bold; color: #d4af37; text-shadow: 0 2px 4px #000; }
+/* ================= 第一人称手部与雪茄 ================= */
+.hand-view { position: absolute; bottom: -30px; right: 5%; width: 160px; height: 120px; z-index: 25; pointer-events: none; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.hand-view svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.9)); }
+/* Zippo打火机 */
+.zippo { position: absolute; left: 20px; top: 10px; width: 30px; height: 40px; opacity: 0; transform: scale(0); transition: all 0.2s; }
+.zippo.open { opacity: 1; transform: scale(1); }
+.flame { position: absolute; top: -15px; left: 5px; width: 20px; height: 30px; background: radial-gradient(ellipse at bottom, #fff 0%, #ffcc00 40%, #ff0000 80%, transparent 100%); border-radius: 50% 50% 20% 20%; opacity: 0; transition: opacity 0.1s; filter: blur(1px); animation: flicker 0.1s infinite alternate; }
+.zippo.lit .flame { opacity: 1; }
+@keyframes flicker { 0% { transform: scale(1) translateY(0); } 100% { transform: scale(1.1) translateY(-2px); } }
+/* 烟雾特效 */
+.smoke { position: fixed; width: 80px; height: 80px; background: radial-gradient(circle, rgba(200,200,200,0.4) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 100; opacity: 0; }
 
-/* 手部与香烟 */
-.hand-view { position: absolute; bottom: -20px; right: 15%; width: 150px; height: 100px; z-index: 25; pointer-events: none; transition: transform 0.3s; }
-.hand-view img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.8)); }
-.smoke { position: fixed; width: 100px; height: 100px; background: radial-gradient(circle, rgba(200,200,200,0.4) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 100; opacity: 0; }
-@keyframes smoke-float { 0% { transform: translateY(0) scale(1); opacity: 0.8; } 100% { transform: translateY(-150px) scale(3); opacity: 0; } }
-.spark { position: fixed; width: 10px; height: 10px; background: #ff9900; border-radius: 50%; box-shadow: 0 0 15px #ff9900; pointer-events: none; z-index: 99; opacity: 0; }
-@keyframes spark-anim { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.5); opacity: 0; } }
-
-/* ================= 日志与提示 ================= */
-.log { position: absolute; top: 10px; right: 12px; width: 220px; max-height: 140px; overflow-y: auto; font-size: 11px; color: #aaa; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; pointer-events: none; z-index: 15; }
-.log-entry { margin: 2px 0; line-height: 1.5; }
+/* ================= 日志与物理按键 ================= */
+.log { position: absolute; top: 10px; right: 12px; width: 220px; max-height: 120px; overflow-y: auto; font-size: 11px; color: #aaa; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); border-radius: 6px; padding: 8px; pointer-events: none; z-index: 15; }
+.log-entry { margin: 2px 0; }
 .log-entry.gold { color: #d4af37; font-weight: bold; }
 .log-entry.psy { color: #e879f9; font-style: italic; }
-.log-entry.action { color: #a78bfa; }
 .log-entry.you { color: #60a5fa; }
 
-.tip { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #d4af37; font-weight: bold; padding: 4px 12px; border-radius: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(212,175,55,0.3); z-index: 20; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+.tip { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #d4af37; font-weight: bold; padding: 4px 12px; border-radius: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(212,175,55,0.3); z-index: 20; opacity: 0; transition: opacity 0.3s; }
 .tip.show { opacity: 1; }
 
-/* ================= 物理按键栏 ================= */
-.actions { height: 70px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(180deg, #111 0%, #050505 100%); border-top: 1px solid #222; box-shadow: 0 -10px 30px rgba(0,0,0,0.8); flex-shrink: 0; z-index: 30; }
-.btn { border: none; border-radius: 8px; font-size: 14px; font-weight: bold; color: #fff; cursor: pointer; font-family: inherit; position: relative; outline: none; box-shadow: 0 4px 0px rgba(0,0,0,0.6), 0 6px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25); transition: transform 0.05s, box-shadow 0.05s, filter 0.2s; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
-.btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0px 0px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.5), inset 0 2px 5px rgba(0,0,0,0.3); filter: brightness(0.85); }
-.btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; transform: translateY(4px); }
+.actions { height: 65px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(180deg, #111 0%, #050505 100%); border-top: 1px solid #222; z-index: 30; }
+.btn { border: none; border-radius: 8px; font-size: 13px; font-weight: bold; color: #fff; cursor: pointer; box-shadow: 0 4px 0px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.25); transition: transform 0.05s, box-shadow 0.05s; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0px 0px rgba(0,0,0,0.6), inset 0 2px 5px rgba(0,0,0,0.3); filter: brightness(0.85); }
+.btn:disabled { opacity: 0.3; box-shadow: none; transform: translateY(4px); }
 .btn-look { background: linear-gradient(180deg, #166534, #14532d); }
 .btn-call { background: linear-gradient(180deg, #1e3a8a, #172554); }
 .btn-raise { background: linear-gradient(180deg, #9a3412, #7c2d12); }
-.btn-allin { background: linear-gradient(180deg, #b91c1c, #7f1d1d); font-weight: 900; color: #fca5a5; }
+.btn-allin { background: linear-gradient(180deg, #b91c1c, #7f1d1d); color: #fca5a5; }
 .btn-fold { background: linear-gradient(180deg, #4b5563, #1f2937); }
 .btn-smoke { background: linear-gradient(180deg, #4c1d95, #2e1065); }
 
-/* ================= 面板 ================= */
-.panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+/* 面板 */
+.panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; }
 .panel-overlay.hidden { display: none; }
-.panel { background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); border: 1px solid #333; border-radius: 12px; padding: 20px; min-width: 260px; max-width: 340px; width: 100%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05); }
-.panel h3 { color: #d4af37; margin: 0 0 16px; font-size: 16px; letter-spacing: 1px; font-weight: normal; }
+.panel { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; min-width: 260px; text-align: center; }
+.panel h3 { color: #d4af37; margin: 0 0 16px; font-size: 16px; }
 .panel .opts { display: flex; flex-direction: column; gap: 10px; }
-.panel .opt { padding: 12px; border: 1px solid #444; border-radius: 8px; background: #111; color: #ddd; font-size: 14px; cursor: pointer; transition: all 0.1s; }
-.panel .opt:active { background: #000; transform: scale(0.98); }
-.panel .opt.alt { border-color: #9a3412; color: #fdba74; background: rgba(154,52,18,0.1); }
-.panel .cancel { margin-top: 16px; padding: 10px; background: transparent; color: #666; border: 1px solid #333; border-radius: 8px; width: 100%; cursor: pointer; }
+.panel .opt { padding: 12px; border: 1px solid #444; border-radius: 8px; background: #222; color: #ddd; font-size: 14px; cursor: pointer; }
+.panel .cancel { margin-top: 16px; padding: 10px; background: transparent; color: #666; border: 1px solid #333; border-radius: 8px; width: 100%; }
 
-.result-card { background: linear-gradient(135deg, #111 0%, #000 100%); border: 1px solid #d4af37; border-radius: 16px; padding: 30px; text-align: center; max-width: 320px; width: 100%; box-shadow: 0 0 40px rgba(212,175,55,0.1), 0 20px 50px rgba(0,0,0,1); }
-.result-card h2 { color: #d4af37; margin: 0 0 10px; font-size: 22px; font-family: "Times New Roman", serif; }
-.result-card .big { font-size: 32px; font-weight: bold; color: #fff; margin: 10px 0; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
-.result-card .sub { font-size: 13px; color: #888; margin-bottom: 20px; }
-.btn-continue { padding: 12px 30px; font-size: 15px; font-weight: bold; border: none; border-radius: 8px; background: #166534; color: #fff; cursor: pointer; box-shadow: 0 4px 0 #0f4623, 0 6px 10px rgba(0,0,0,0.5); }
-.btn-continue:active { transform: translateY(4px); box-shadow: 0 0 0 #0f4623; }
+/* 结算 */
+.result-card { background: #111; border: 1px solid #d4af37; border-radius: 16px; padding: 30px; text-align: center; max-width: 320px; }
+.result-card h2 { color: #d4af37; margin: 0 0 10px; font-size: 22px; }
+.result-card .big { font-size: 32px; font-weight: bold; color: #fff; margin: 10px 0; }
+.btn-continue { padding: 12px 30px; font-size: 15px; font-weight: bold; border: none; border-radius: 8px; background: #166534; color: #fff; cursor: pointer; }
 
 /* 开始页 */
-.overlay { position: fixed; inset: 0; z-index: 200; background: radial-gradient(circle at 50% 30%, #0c3b27 0%, #020604 80%); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.overlay { position: fixed; inset: 0; z-index: 200; background: radial-gradient(circle at 50% 30%, #0c3b27 0%, #020604 80%); display: flex; align-items: center; justify-content: center; }
 .overlay.hidden { display: none; }
-.start-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
-.start-title { font-family: "Times New Roman", serif; font-size: 48px; font-weight: bold; color: #d4af37; letter-spacing: 8px; margin-bottom: 8px; text-shadow: 0 4px 20px rgba(212,175,55,0.4); }
-.start-sub { font-size: 13px; color: #888; letter-spacing: 2px; margin-bottom: 30px; }
-.start-btn { padding: 16px 50px; font-size: 18px; font-weight: bold; letter-spacing: 4px; border: none; border-radius: 10px; background: linear-gradient(180deg, #166534, #14532d); color: #fff; cursor: pointer; box-shadow: 0 6px 0 #0a2e17, 0 10px 20px rgba(0,0,0,0.6); transition: transform 0.1s, box-shadow 0.1s; }
-.start-btn:active { transform: translateY(6px); box-shadow: 0 0 0 #0a2e17; }
-
-@media (orientation: landscape) and (max-height: 400px) {
-  .card { width: 32px; height: 46px; }
-  .seat-bottom .card { width: 50px; height: 74px; }
-  .seat .avatar { width: 40px; height: 40px; }
-  .actions { height: 60px; padding: 6px 12px; gap: 6px; }
-  .btn { font-size: 12px; }
-  .pot { width: 70px; height: 70px; }
-  .pot-amount { font-size: 18px; }
-  .hand-view { width: 120px; height: 80px; right: 10%; }
-}
+.start-title { font-family: "Times New Roman", serif; font-size: 48px; font-weight: bold; color: #d4af37; letter-spacing: 8px; text-shadow: 0 4px 20px rgba(212,175,55,0.4); }
+.start-btn { margin-top: 30px; padding: 16px 50px; font-size: 18px; font-weight: bold; border-radius: 10px; background: #166534; color: #fff; box-shadow: 0 6px 0 #0a2e17; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -217,39 +214,67 @@ html, body {
     <div class="spacer"></div>
     <div class="pot-big" id="potTop">$ 0</div>
     <button class="icon-btn" id="muteBtn">🔊</button>
-    <button class="icon-btn" id="bgmBtn">🎵</button>
   </div>
 
   <div class="game">
     <div class="felt"></div>
     
-    <!-- 电脑B (疯子：红眼动漫) -->
+    <!-- 电脑B：疯子 (立绘) -->
     <div class="seat seat-top" id="seat-2">
-      <div class="avatar">
-        <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#2c1b1b"/><path d="M20,50 Q50,10 80,50 L80,80 L20,80 Z" fill="#1c1010"/><circle cx="35" cy="50" r="8" fill="#ff3333"/><circle cx="65" cy="50" r="8" fill="#ff3333"/><circle cx="35" cy="50" r="3" fill="#fff"/><circle cx="65" cy="50" r="3" fill="#fff"/><path d="M35,70 Q50,80 65,70" stroke="#555" stroke-width="3" fill="none"/><path d="M15,45 L35,25 M85,45 L65,25" stroke="#1c1010" stroke-width="12" stroke-linecap="round"/></svg>
+      <div class="character">
+        <svg viewBox="0 0 100 120">
+          <path d="M10,120 L20,70 Q30,60 50,60 Q70,60 80,70 L90,120" fill="#4a1515"/>
+          <path d="M20,70 Q25,50 50,50 Q75,50 80,70" fill="#1c1010"/>
+          <path d="M10,50 Q30,10 50,30 Q70,10 90,50 L80,60 L20,60 Z" fill="#222"/>
+          <circle cx="35" cy="50" r="6" fill="#ff3333"/><circle cx="65" cy="50" r="6" fill="#ff3333"/>
+          <circle cx="35" cy="50" r="2" fill="#fff"/><circle cx="65" cy="50" r="2" fill="#fff"/>
+          <path d="M35,65 Q50,75 65,65" stroke="#555" stroke-width="3" fill="none"/>
+          <path d="M40,55 L45,55 M55,55 L60,55" stroke="#111" stroke-width="4"/>
+        </svg>
       </div>
-      <div class="name">电脑B (疯子)</div>
-      <div class="chips" id="info-2"><span class="coin-icon"></span>1000</div>
+      <div class="info-panel">
+        <div class="name">电脑B (疯子)</div>
+        <div class="chips" id="info-2"><span class="coin-icon"></span>1000</div>
+      </div>
       <div class="hand" id="cards-2"></div>
     </div>
 
-    <!-- 电脑A (老实人：眼镜大叔) -->
+    <!-- 电脑A：老实人 (立绘) -->
     <div class="seat seat-left" id="seat-1">
-      <div class="avatar">
-        <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#1c2c3b"/><path d="M20,50 Q50,20 80,50 L80,80 L20,80 Z" fill="#101c28"/><rect x="25" y="42" width="20" height="14" rx="4" fill="none" stroke="#8899a6" stroke-width="3"/><rect x="55" y="42" width="20" height="14" rx="4" fill="none" stroke="#8899a6" stroke-width="3"/><line x1="45" y1="49" x2="55" y2="49" stroke="#8899a6" stroke-width="3"/><circle cx="35" cy="49" r="2" fill="#fff"/><circle cx="65" cy="49" r="2" fill="#fff"/><path d="M40,70 L60,70" stroke="#445566" stroke-width="3"/></svg>
+      <div class="character">
+        <svg viewBox="0 0 100 120">
+          <path d="M15,120 L25,70 Q50,60 75,70 L85,120" fill="#334155"/>
+          <path d="M25,70 Q30,40 50,40 Q70,40 75,70" fill="#e2e8f0"/>
+          <path d="M25,40 L75,40 L70,30 L30,30 Z" fill="#475569"/>
+          <rect x="25" y="45" width="20" height="12" rx="3" fill="none" stroke="#222" stroke-width="2"/>
+          <rect x="55" y="45" width="20" height="12" rx="3" fill="none" stroke="#222" stroke-width="2"/>
+          <line x1="45" y1="51" x2="55" y2="51" stroke="#222" stroke-width="2"/>
+          <path d="M40,65 Q50,70 60,65" stroke="#94a3b8" stroke-width="2" fill="none"/>
+        </svg>
       </div>
-      <div class="name">电脑A (老实)</div>
-      <div class="chips" id="info-1"><span class="coin-icon"></span>1000</div>
+      <div class="info-panel">
+        <div class="name">电脑A (老实)</div>
+        <div class="chips" id="info-1"><span class="coin-icon"></span>1000</div>
+      </div>
       <div class="hand" id="cards-1"></div>
     </div>
 
-    <!-- 电脑C (老千：遮眼长发) -->
+    <!-- 电脑C：老千 (立绘) -->
     <div class="seat seat-right" id="seat-3">
-      <div class="avatar">
-        <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#202020"/><path d="M15,40 Q50,10 85,40 L85,80 L15,80 Z" fill="#111"/><path d="M15,40 Q20,90 35,95 L15,95 Z" fill="#000"/><path d="M85,40 Q80,90 65,95 L85,95 Z" fill="#000"/><path d="M25,45 L50,55 L30,65 Z" fill="#000"/><circle cx="65" cy="50" r="5" fill="#66ccff"/><circle cx="65" cy="50" r="2" fill="#fff"/><path d="M55,75 L65,75" stroke="#333" stroke-width="3"/></svg>
+      <div class="character">
+        <svg viewBox="0 0 100 120">
+          <path d="M15,120 L25,65 L75,65 L85,120" fill="#111"/>
+          <path d="M25,65 Q30,40 50,40 Q70,40 75,65" fill="#1c1c1c"/>
+          <path d="M20,40 Q30,20 50,20 Q70,20 80,40 L90,70 L80,70 Q70,50 50,50 Q30,50 20,70 Z" fill="#000"/>
+          <path d="M35,50 L65,45 L55,55 Z" fill="#000"/>
+          <circle cx="60" cy="52" r="3" fill="#66ccff"/>
+          <path d="M45,65 Q50,68 55,65" stroke="#333" stroke-width="2" fill="none"/>
+        </svg>
       </div>
-      <div class="name">电脑C (老千)</div>
-      <div class="chips" id="info-3"><span class="coin-icon"></span>1000</div>
+      <div class="info-panel">
+        <div class="name">电脑C (老千)</div>
+        <div class="chips" id="info-3"><span class="coin-icon"></span>1000</div>
+      </div>
       <div class="hand" id="cards-3"></div>
     </div>
 
@@ -258,33 +283,45 @@ html, body {
       <div class="pot-amount" id="potAmt">0</div>
     </div>
 
+    <!-- 玩家区域 -->
     <div class="seat seat-bottom" id="seat-0">
-      <div class="avatar">
-        <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#2b3a2b"/><path d="M20,50 Q50,20 80,50 L80,80 L20,80 Z" fill="#1a2b1a"/><circle cx="35" cy="50" r="4" fill="#fff"/><circle cx="65" cy="50" r="4" fill="#fff"/><path d="M40,65 Q50,75 60,65" stroke="#556" stroke-width="3" fill="none"/></svg>
-      </div>
-      <div class="you-info-col">
-        <div class="you-name-row">
-          <div class="name">你</div>
-          <div class="chips" id="info-0"><span class="coin-icon"></span>1000</div>
-        </div>
-        <div class="you-status" id="handtype-0"></div>
-        <div class="you-winrate" id="winrate-0"></div>
+      <div class="info-panel">
+        <div class="name">你</div>
+        <div class="chips" id="info-0"><span class="coin-icon"></span>1000</div>
+        <div class="you-status" id="handtype-0" style="color:#4ade80; font-size:11px;"></div>
       </div>
       <div class="hand" id="cards-0" style="position: relative;">
-        <!-- 遮罩层：用于搓牌 -->
-        <div id="scratch-overlay" style="position:absolute; inset:-10px; z-index:10; cursor:pointer; display:none;"></div>
+        <!-- 刮刮乐画布 -->
+        <canvas id="scratchZone"></canvas>
+        <div class="scratch-hint" id="scratchHint">按住涂抹刮开</div>
       </div>
     </div>
 
-    <!-- 第一人称手部 -->
+    <!-- 第一人称手部 + 雪茄 + Zippo -->
     <div class="hand-view" id="handView">
-      <!-- 用 SVG 画一只手 -->
-      <svg viewBox="0 0 200 150" style="width:100%; height:100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));">
+      <svg viewBox="0 0 200 150">
+        <!-- 手背 -->
         <path d="M50,150 L60,90 Q65,70 80,70 L120,70 Q140,70 150,90 L160,150 Z" fill="#d4a373" stroke="#b07d50" stroke-width="2"/>
-        <!-- 大拇指 -->
         <path d="M50,100 Q20,90 30,70 Q40,50 60,70" fill="#d4a373" stroke="#b07d50" stroke-width="2"/>
-        <!-- 手指关节线 -->
         <path d="M90,70 L95,95 M120,70 L115,95" stroke="#b07d50" stroke-width="2"/>
+        
+        <!-- 雪茄 -->
+        <g id="cigarGroup" transform="translate(120, 30) rotate(15)">
+          <rect x="0" y="0" width="70" height="12" rx="6" fill="#4a2e15" />
+          <rect x="0" y="0" width="30" height="12" rx="6" fill="#8b4513" /> <!-- 烟标 -->
+          <path d="M-5,6 L0,0 L0,12 Z" fill="#2b1a0a" /> <!-- 烟头 -->
+          <circle cx="-2" cy="6" r="2" fill="#ff5500" opacity="0" id="cigarTip" /> <!-- 燃烧点 -->
+        </g>
+        
+        <!-- Zippo打火机 -->
+        <g class="zippo" id="zippo">
+          <!-- 机身 -->
+          <rect x="0" y="10" width="20" height="30" rx="2" fill="#c0c0c0" stroke="#666" stroke-width="1"/>
+          <!-- 盖子 -->
+          <rect x="0" y="0" width="20" height="10" rx="2" fill="#d0d0d0" stroke="#666" stroke-width="1"/>
+          <!-- 火焰 -->
+          <div class="flame"></div>
+        </g>
       </svg>
     </div>
 
@@ -292,7 +329,6 @@ html, body {
     <div class="log" id="log"></div>
   </div>
 
-  <!-- 增加点烟按钮和梭哈按钮 -->
   <div class="actions">
     <button class="btn btn-look" id="btnLook">看牌</button>
     <button class="btn btn-call" id="btnCall">跟注</button>
@@ -303,27 +339,24 @@ html, body {
   </div>
 </div>
 
-<div class="panel-overlay hidden" id="raisePanel"><div class="panel"><h3>选择加注额度</h3><div class="opts" id="raiseOpts"></div><button class="cancel" id="raiseCancel">取消</button></div></div>
-<div class="panel-overlay hidden" id="comparePanel"><div class="panel"><h3>选择对手 (双倍跟注)</h3><div class="opts" id="compareOpts"></div><button class="cancel" id="compareCancel">取消</button></div></div>
+<div class="panel-overlay hidden" id="raisePanel"><div class="panel"><h3>加注额度</h3><div class="opts" id="raiseOpts"></div><button class="cancel" id="raiseCancel">取消</button></div></div>
 <div class="panel-overlay hidden" id="resultPanel"><div class="result-card" id="resultCard"></div></div>
 
 <div class="overlay" id="startOverlay">
-  <div class="start-inner">
+  <div style="text-align: center;">
     <h1 class="start-title">炸 金 花</h1>
-    <div class="start-sub">极致沉浸 · 真实搓牌 · 无限梭哈</div>
     <button class="start-btn" id="startBtn">入 座</button>
   </div>
 </div>
 </div>
 
 <script>
-// ==================== 配置 ====================
-const ANTE = 10, START_CHIPS = 1000, MAX_BASE_BET = 999999; // 取消封顶
+// ==================== 引擎核心 ====================
+const ANTE = 10, START_CHIPS = 1000;
 const RANKS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
 const SUITS = ['♠','♥','♣','♦'];
 const RANK_VALUE = {}; RANKS.forEach((r,i)=>RANK_VALUE[r]=i+2);
 
-// ==================== 牌型 ====================
 function makeDeck(){const d=[];RANKS.forEach(r=>SUITS.forEach(s=>d.push({rank:r,suit:s,value:RANK_VALUE[r]})));return d}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function evaluate(cards){
@@ -366,7 +399,6 @@ function estimateWinRate(myCards,numOpp,trials=200){
   return wins/trials;
 }
 
-// ==================== 引擎与心理学 ====================
 class Player{
   constructor(n,c,h=false, style='normal'){
     this.name=n; this.chips=c; this.isHuman=h; this.style=style;
@@ -388,144 +420,20 @@ class Game{
     this.roundNo++;this.turn=0;
   }
   nextIndex(i){const n=this.players.length;for(let k=1;k<=n;k++){const j=(i+k)%n;if(!this.players[j].folded && !this.players[j].allin)return j}return -1}
-  
-  // 梭哈与下注
   doCall(p){
     let target = p.callAmount(this.baseBet);
-    if (target >= p.chips) { // 梭哈
-      target = p.chips; p.allin = true;
-    }
+    if (target >= p.chips) { target = p.chips; p.allin = true; }
     p.chips-=target; this.pot+=target; return target;
   }
   doRaise(p,nb){
-    this.baseBet = nb; // 记录新的基础注
+    this.baseBet = nb;
     let target = nb * (p.looked?2:1);
     if (target >= p.chips) { target = p.chips; p.allin = true; }
     p.chips-=target; this.pot+=target; return target;
   }
   doFold(p){p.folded=true;}
-  doCompare(p,t){
-    const c=Math.min(p.callAmount(this.baseBet)*2,p.chips);
-    p.chips-=c;this.pot+=c;
-    if(p.chips===0) p.allin=true;
-    const r=compareHands(p.cards,t.cards);
-    if(r>0){t.folded=true;return true}p.folded=true;return false;
-  }
 }
 
-// ==================== AI ====================
-function aiTurn(game, p) {
-  if (p.allin) return; // 已经梭哈
-  const numOpp = game.active().length - 1;
-  if (numOpp === 0) return;
-  const seatIdx = players.indexOf(p);
-  const callCost = p.callAmount(game.baseBet);
-  const potOdds = callCost / (game.pot + callCost);
-  const others = game.active().filter(x => x !== p);
-
-  let baseAggr = 0.3, bluffProb = 0.1, strengthThreshold = 0.5;
-  if (p.style === 'tight') { baseAggr = 0.15; bluffProb = 0.02; strengthThreshold = 0.65; }
-  else if (p.style === 'maniac') { baseAggr = 0.6; bluffProb = 0.35; strengthThreshold = 0.35; }
-  else if (p.style === 'shark') { baseAggr = 0.4; bluffProb = 0.15; strengthThreshold = 0.45; }
-
-  baseAggr += p.mood * 0.2; bluffProb += p.mood * 0.15; strengthThreshold -= p.mood * 0.1;
-
-  if (!p.looked) {
-    if (p.style === 'maniac' && Math.random() < 0.4 + p.mood*0.2) {
-      const nb = game.baseBet + ANTE * 2;
-      const amt = game.doRaise(p, nb); flyChips(seatIdx);
-      log(`${p.name} 嚣张地盲推了 ${amt} 筹码！`, 'psy'); return;
-    }
-    if (callCost < p.chips * 0.15 && Math.random() < 0.7) {
-      const amt = game.doCall(p); flyChips(seatIdx);
-      log(`${p.name} 暗中跟注 ${amt}`); return;
-    } else { p.looked = true; }
-  }
-
-  const winRate = estimateWinRate(p.cards, numOpp, 100);
-  const perceivedStrength = winRate + p.mood * 0.1;
-  const raiseTo = game.baseBet * 2 + Math.floor(Math.random() * 40);
-  const isFacingHeavyBet = (game.baseBet > 50);
-
-  if (perceivedStrength > 0.85) {
-    if (others.length === 1 && Math.random() < 0.5) {
-      log(`${p.name} 冷酷地要求比牌！`, 'action'); game.doCompare(p, others[0]); return;
-    }
-    if (Math.random() < 0.4) { // 梭哈
-      const amt = game.doRaise(p, p.chips); flyChips(seatIdx);
-      log(`${p.name} 推出了所有筹码！梭哈！`, 'action');
-    } else {
-      const amt = game.doRaise(p, raiseTo); flyChips(seatIdx);
-      log(`${p.name} 加注到 ${raiseTo}`);
-    }
-    return;
-  }
-
-  if (perceivedStrength > strengthThreshold) {
-    if (isFacingHeavyBet && p.style === 'tight') {
-      log(`${p.name} 叹了口气，弃掉了手里的牌。`, 'dim'); game.doFold(p); return;
-    }
-    const amt = game.doCall(p); flyChips(seatIdx); log(`${p.name} 跟注 ${amt}`);
-    return;
-  }
-
-  if (p.style === 'tight') { game.doFold(p); log(`${p.name} 摇了摇头，弃牌。`, 'dim'); return; }
-
-  if (Math.random() < bluffProb && callCost < p.chips * 0.2) {
-    const amt = game.doRaise(p, raiseTo); flyChips(seatIdx);
-    log(`${p.name} 突然发力，重重加注到 ${raiseTo}！`, 'psy'); return;
-  }
-  if (potOdds < 0.1 && Math.random() < 0.5) {
-    const amt = game.doCall(p); flyChips(seatIdx); log(`${p.name} 跟注 ${amt}`); return;
-  }
-  game.doFold(p); log(`${p.name} 弃牌`);
-}
-
-// ==================== 音频与特效 ====================
-let audioCtx=null; let muted=localStorage.getItem('zjh_muted')==='1';
-function initAudio(){if(audioCtx)return;try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}
-function tone(f,d,type='sine',v=.1,delay=0){
-  if(!audioCtx||muted)return;
-  const t0=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v,t0+.02);g.gain.exponentialRampToValueAtTime(.0008,t0+d);
-  o.connect(g).connect(audioCtx.destination);o.start(t0);o.stop(t0+d+.03);
-}
-const sfx={
-  deal:()=>{tone(800,.05,'square',.06);tone(500,.05,'square',.05,.05)},
-  look:()=>tone(660,.1,'sine',.08), call:()=>tone(880,.08,'sine',.08),
-  raise:()=>{tone(660,.06,'square',.08);tone(990,.1,'square',.08,.06)},
-  fold:()=>tone(200,.15,'sawtooth',.08), compare:()=>{tone(440,.05,'triangle',.08);tone(660,.1,'triangle',.08,.05)},
-  win:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.18,'sine',.1,i*.08))},
-  lose:()=>{[400,350,300].forEach((f,i)=>tone(f,.15,'sawtooth',.08,i*.1))},
-  spark:()=>{tone(1200,.05,'square',.1);tone(800,.1,'sawtooth',.08,.05)},
-  smoke:()=>{tone(300,.5,'sine',.05);tone(200,.8,'sine',.05,.2)},
-  scratch:()=>tone(150+Math.random()*100,.05,'sawtooth',.02)
-};
-let bgmTimer=null, bgmStep=0;
-const BGM_CHORDS=[{bass:110.00, pad:[220.00, 261.63, 329.63]},{bass: 87.31, pad:[174.61, 220.00, 261.63]},{bass:130.81, pad:[261.63, 329.63, 392.00]},{bass: 98.00, pad:[196.00, 246.94, 293.66]}];
-function playBgmChord(){
-  if(!audioCtx||muted)return;
-  const c=BGM_CHORDS[bgmStep % 4];
-  tone(c.bass, 1.7, 'sine', 0.03, 0);
-  c.pad.forEach((f,i)=>tone(f, 1.1, 'sine', 0.02, i*0.12));
-  bgmStep++;
-}
-function flyChips(seatIdx){
-  const seat=$(`seat-${seatIdx}`),pot=document.querySelector('.pot');
-  if(!seat||!pot)return;
-  const s=seat.getBoundingClientRect(),e=pot.getBoundingClientRect();
-  const chip=document.createElement('div');chip.textContent='🪙';chip.style.position='fixed';chip.style.fontSize='20px';chip.style.zIndex=999;chip.style.pointerEvents='none';
-  chip.style.left=(s.left+s.width/2)+'px';chip.style.top=(s.top+s.height/2)+'px';
-  chip.style.transition='transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s';
-  document.body.appendChild(chip);
-  requestAnimationFrame(()=>{
-    chip.style.transform=`translate(${e.left+e.width/2-(s.left+s.width/2)}px,${e.top+e.height/2-(s.top+s.height/2)}px) scale(.3)`;
-    chip.style.opacity='0';
-  });
-  setTimeout(()=>chip.remove(),600);
-}
-
-// ==================== 状态 ====================
 const players=[
   new Player('你',START_CHIPS,true,'normal'),
   new Player('电脑A',START_CHIPS,false,'tight'),
@@ -535,24 +443,109 @@ const players=[
 const game=new Game(players);
 let humanReady=false,hasDealtThisRound=false;
 const $=id=>document.getElementById(id);
-let scratchActive = false; // 搓牌状态
 
-(function loadSave(){
-  try{const s=JSON.parse(localStorage.getItem('zjh_save')||'null');
-    if(s&&Array.isArray(s.chips)&&s.chips.length===4){players.forEach((p,i)=>{p.chips=s.chips[i]})}
-  }catch(e){}
-})();
-function saveGame(){try{localStorage.setItem('zjh_save',JSON.stringify({chips:players.map(p=>p.chips)}))}catch(e){}}
-function log(msg,cls=''){
-  const el=$('log'),div=document.createElement('div');
-  div.className='log-entry'+(cls?' '+cls:'');div.textContent=msg;
-  el.appendChild(div);el.scrollTop=el.scrollHeight;
-  while(el.children.length>40)el.removeChild(el.firstChild);
+// ==================== 音效库 (Web Audio) ====================
+let audioCtx=null;
+function initAudio(){if(audioCtx)return;try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}
+function playTone(f,d,type='sine',v=.1,delay=0){
+  if(!audioCtx)return;
+  const t0=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v,t0+.02);g.gain.exponentialRampToValueAtTime(.0008,t0+d);
+  o.connect(g).connect(audioCtx.destination);o.start(t0);o.stop(t0+d+.03);
+}
+function playNoise(duration, filterFreq, type='bandpass', vol=0.2) {
+  if(!audioCtx)return;
+  const bufferSize = audioCtx.sampleRate * duration;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const noise = audioCtx.createBufferSource(); noise.buffer = buffer;
+  const filter = audioCtx.createBiquadFilter(); filter.type = type; filter.frequency.value = filterFreq;
+  const gain = audioCtx.createGain(); gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+  noise.connect(filter).connect(gain).connect(audioCtx.destination);
+  noise.start();
+}
+const sfx = {
+  zippoOpen: () => { playTone(3000, 0.02, 'square', 0.1); playTone(2000, 0.05, 'sine', 0.05, 0.01); }, // 清脆开盖
+  zippoStrike: () => { playNoise(0.15, 4000, 'highpass', 0.3); playTone(800, 0.05, 'sawtooth', 0.1); }, // 砂轮打火
+  flame: () => { playNoise(2.0, 600, 'lowpass', 0.1); }, // 火焰呼呼声
+  smoke: () => { playNoise(1.5, 200, 'lowpass', 0.15); }, // 吐烟
+  scratch: () => { playNoise(0.1, 2000, 'bandpass', 0.1); } // 刮牌
+};
+
+// ==================== 刮刮乐看牌逻辑 ====================
+function setupScratch() {
+  const canvas = $('scratchZone');
+  const hint = $('scratchHint');
+  if(!canvas || !hint) return;
+  
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  
+  // 填充深色遮挡
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#333';
+  for(let i=0; i<50; i++) {
+    ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 2, 2);
+  }
+  
+  canvas.style.display = 'block';
+  hint.style.display = 'flex';
+  
+  let isDrawing = false;
+  let scratchedPixels = 0;
+  const totalPixels = canvas.width * canvas.height;
+
+  const scratch = (x, y) => {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+    
+    if (Math.random() < 0.2) sfx.scratch(); // 摩擦声
+    
+    // 检查刮开比例
+    scratchedPixels += Math.PI * 400; 
+    if (scratchedPixels > totalPixels * 0.4) {
+      // 刮开超过 40%，直接全亮
+      canvas.style.display = 'none';
+      hint.style.display = 'none';
+      finishLook();
+    }
+  };
+
+  const getPos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - r.left, y: clientY - r.top };
+  };
+
+  canvas.ontouchstart = canvas.onmousedown = (e) => { e.preventDefault(); isDrawing = true; const p = getPos(e); scratch(p.x, p.y); };
+  canvas.ontouchmove = canvas.onmousemove = (e) => { if(!isDrawing) return; e.preventDefault(); const p = getPos(e); scratch(p.x, p.y); };
+  canvas.ontouchend = canvas.onmouseup = () => { isDrawing = false; };
+}
+
+function finishLook() {
+  game.human.looked = true;
+  $('scratchZone').style.display = 'none';
+  $('scratchHint').style.display = 'none';
+  render();
+  setButtons(true);
+  const numOpp = game.active().length - 1;
+  if(numOpp > 0){
+    const rate = estimateWinRate(game.human.cards, numOpp, 500);
+    $('handtype-0').textContent = evaluate(game.human.cards).name + ` | 胜率 ${Math.round(rate*100)}%`;
+  }
 }
 
 // ==================== 渲染 ====================
-function cardEl(card,faceUp,big){
-  const el=document.createElement('div');el.className='card'+(big?' big':'');
+function cardEl(card,faceUp){
+  const el=document.createElement('div');el.className='card';
   if(faceUp&&card){
     el.classList.add('face');const red=card.suit==='♥'||card.suit==='♦';el.classList.add(red?'red':'black');
     const r=document.createElement('div');r.className='rank';r.textContent=card.rank;
@@ -565,23 +558,13 @@ function cardEl(card,faceUp,big){
 function renderCards(p,seatIdx){
   const wrap=$(`cards-${seatIdx}`);wrap.innerHTML='';
   const faceUp=(p.isHuman&&p.looked)||p.folded;
-  p.cards.forEach((c,i)=>{
-    const el=cardEl(c,faceUp,false);
+  p.cards.forEach((c)=>{
+    const el=cardEl(c,faceUp);
     if(!hasDealtThisRound){
-      el.classList.add('dealing');el.style.animationDelay=`${(seatIdx*.05+i*.08).toFixed(2)}s`;
-      el.addEventListener('animationend',()=>el.classList.remove('dealing'),{once:true});
+      el.classList.add('dealing'); el.style.animation = 'deal-in 0.3s ease-out';
     }
     wrap.appendChild(el);
   });
-  // 如果是玩家且还没看牌，加搓牌遮罩
-  if(p.isHuman && !p.looked && !p.folded){
-    const mask = document.createElement('div');
-    mask.id = 'scratchMask';
-    mask.className = 'scratch-mask';
-    mask.style.backdropFilter = 'blur(10px)';
-    mask.style.background = 'rgba(0,0,0,0.9)';
-    wrap.appendChild(mask);
-  }
 }
 
 function render(){
@@ -592,14 +575,18 @@ function render(){
   players.forEach((p,i)=>{
     const seat=$(`seat-${i}`),wrap=$(`cards-${i}`),info=$(`info-${i}`);
     if(seat){seat.classList.toggle('active',game.turn===i&&!p.folded);seat.classList.toggle('folded',p.folded)}
+    
+    // 如果玩家已经看过牌或者弃牌了，就渲染正面，否则渲染背面
     const faceUp=(p.isHuman&&p.looked)||p.folded;
-    const need=wrap.dataset.faceUp!==String(faceUp)||wrap.dataset.folded!==String(p.folded)||wrap.dataset.round!==String(game.roundNo);
-    if(need){
+    // 只有回合改变或刚发牌时重绘卡牌，防止闪烁
+    if(wrap.dataset.round !== String(game.roundNo) || (p.isHuman && p.looked && wrap.dataset.looked !== 'true')) {
       renderCards(p,i);
-      wrap.dataset.faceUp=String(faceUp);wrap.dataset.folded=String(p.folded);wrap.dataset.round=String(game.roundNo);
+      wrap.dataset.round = String(game.roundNo);
+      if(p.isHuman && p.looked) wrap.dataset.looked = 'true';
+      else wrap.dataset.looked = 'false';
     }
+    
     info.innerHTML = `<span class="coin-icon"></span>${p.chips}` + (p.allin ? ' (ALL IN)' : '');
-    if(p.isHuman){$('handtype-0').textContent=p.looked?evaluate(p.cards).name:''}
   });
 
   $('btnCall').textContent=`跟注 ${Math.min(game.human.callAmount(game.baseBet), game.human.chips)}`;
@@ -608,10 +595,6 @@ function render(){
   const cur=players[game.turn];
   if(cur && cur.isHuman && humanReady){
     tipEl.textContent='轮到你了';tipEl.classList.add('show');
-  } else if(cur && !cur.isHuman && !cur.folded){
-    const tells = ["正在点烟...", "死死盯着底牌...", "搓了搓手...", "看着你的筹码...", "面无表情..."];
-    tipEl.textContent=`${cur.name} ${tells[Math.floor(Math.random()*tells.length)]}`;
-    tipEl.classList.add('show');
   } else { tipEl.classList.remove('show'); }
 }
 
@@ -622,91 +605,33 @@ function setButtons(enabled){
   $('btnLook').textContent=game.human.looked?'已看牌':'看牌';
 }
 
-// ==================== 搓牌交互 ====================
-function initScratch(){
-  const wrap = $('cards-0');
-  let startX = 0, isScratching = false;
-
-  const start = (e) => {
-    if(!humanReady || game.human.looked) return;
-    isScratching = true;
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
-    sfx.scratch();
-  };
-  const move = (e) => {
-    if(!isScratching) return;
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
-    const dist = Math.abs(x - startX);
-    const mask = $('scratchMask');
-    if(mask){
-      // 滑动超过 150px 自动全开，可以边搓边听声音
-      const opacity = Math.max(0, 1 - dist / 150);
-      mask.style.opacity = opacity;
-      if (dist % 15 < 5) sfx.scratch(); // 摩擦声
-      if (opacity <= 0.05) finishScratch();
-    }
-  };
-  const end = () => {
-    isScratching = false;
-    const mask = $('scratchMask');
-    if(mask && mask.style.opacity > 0.2) {
-      mask.style.opacity = 1; // 没搓够，弹回
-    } else if (mask) {
-      finishScratch();
-    }
-  };
-
-  wrap.addEventListener('touchstart', start);
-  wrap.addEventListener('touchmove', move, {passive: false});
-  wrap.addEventListener('touchend', end);
-  wrap.addEventListener('mousedown', start);
-  window.addEventListener('mousemove', move);
-  window.addEventListener('mouseup', end);
-}
-
-function finishScratch(){
-  const mask = $('scratchMask');
-  if(mask) mask.remove();
-  game.human.looked = true;
-  log('你 搓开了牌面','you');
-  render();
-  setButtons(true);
-  const numOpp = game.active().length - 1;
-  if(numOpp > 0){
-    const rate = estimateWinRate(game.human.cards, numOpp, 800);
-    $('winrate-0').textContent = `胜率 ${Math.round(rate*100)}%`;
-  }
-}
-
-// ==================== 流程 ====================
+// ==================== 游戏流程 ====================
 function newRound(){
-  if(players.filter(p=>p.chips>0).length<2){showResult(null,'游戏结束','只剩一人有筹码',true);return}
-  if(game.human.chips<=0){showResult(null,'破产','重新开始',true);return}
+  if(game.human.chips<=0){alert("你已破产");location.reload();return;}
   game.resetRound();hasDealtThisRound=false;humanReady=false;setButtons(false);
-  $('winrate-0').textContent='';
-  log(`─── 第 ${game.roundNo} 局 ───`,'gold');
-  sfx.deal();render();hasDealtThisRound=true;
+  $('handtype-0').textContent='';
+  // 隐藏上一局的刮刮乐
+  if($('scratchZone')) $('scratchZone').style.display='none';
+  if($('scratchHint')) $('scratchHint').style.display='none';
   
-  setTimeout(() => {
-    if(!$('scratchMask') && !game.human.looked && !game.human.folded) {
-       initScratch(); // 初始化搓牌监听
+  render(); hasDealtThisRound=true;
+  setTimeout(()=>{
+    // 发牌后自动弹出刮刮乐提示
+    if(!game.human.looked && !game.human.folded) {
+      setupScratch();
     }
     nextTurn();
-  }, 500);
+  }, 400);
 }
 
 function nextTurn(){
   const act = game.active();
-  // 如果只剩一个未弃牌，或者全场 All-in，直接结算比牌
-  if (act.length <= 1 || (act.length > 1 && act.every(p => p.allin))) {
-    settle(); return;
-  }
+  if (act.length <= 1 || (act.length > 1 && act.every(p => p.allin))) { settle(); return; }
   const p = players[game.turn];
   if(p.folded || p.allin) {
     let next = game.nextIndex(game.turn);
     if(next === -1) { settle(); return; }
-    game.turn = next;
-    nextTurn(); return;
+    game.turn = next; nextTurn(); return;
   }
   render();
   
@@ -714,17 +639,28 @@ function nextTurn(){
     humanReady=true;setButtons(true);
   }else{
     humanReady=false;setButtons(false);
-    let delay = 800 + Math.random() * 600;
-    setTimeout(()=>aiAct(p),delay);
+    setTimeout(()=>{ aiTurn(p); }, 1000 + Math.random()*500);
   }
 }
 
-function aiAct(p){
-  aiTurn(game,p);
+function aiTurn(p){
+  // AI 简单的决策逻辑
+  if(!p.looked) p.looked = true;
+  const winRate = estimateWinRate(p.cards, game.active().length - 1, 100);
+  
+  if (winRate > 0.7 || Math.random() < 0.1) {
+    game.doRaise(p, game.baseBet * 2);
+  } else if (winRate > 0.4 || Math.random() < 0.3) {
+    game.doCall(p);
+  } else {
+    game.doFold(p);
+  }
+  
   const next = game.nextIndex(game.turn);
   if(next === -1){ setTimeout(settle,400); return; }
   game.turn = next; setTimeout(nextTurn,300);
 }
+
 function afterHuman(){
   humanReady=false;setButtons(false);render();
   const next = game.nextIndex(game.turn);
@@ -735,132 +671,122 @@ function afterHuman(){
 function settle(){
   setButtons(false);
   const act=game.active();
-  if(act.length===0){setTimeout(newRound,1500);return}
   let winner=act[0];
   for(const x of act)if(compareHands(x.cards,winner.cards)>0)winner=x;
   winner.chips+=game.pot;
-  const won=game.pot;
-  
-  log(`★ ${winner.name} 赢（${evaluate(winner.cards).name}），获得 ${won}`,'gold');
-  if(winner.isHuman){sfx.win()}else if(game.human.folded){sfx.lose()}
   
   players.forEach((p,i)=>{
     const wrap=$(`cards-${i}`);wrap.innerHTML='';
-    p.cards.forEach((c,j)=>{
-      const el=cardEl(c,true,p.isHuman);el.classList.add('flipping');el.style.animationDelay=`${j*.05}s`;
-      wrap.appendChild(el);
-    });
-    if(p.isHuman)$('handtype-0').textContent=evaluate(p.cards).name;
+    p.cards.forEach((c)=>{ wrap.appendChild(cardEl(c,true)); });
+    if(p.isHuman) $('handtype-0').textContent = evaluate(p.cards).name;
   });
   
-  saveGame();
-  showResult(winner,winner.isHuman?'你赢了':'本局未获胜',`赢家牌型：${evaluate(winner.cards).name}`);
-  setTimeout(newRound,3200);
-}
-function showResult(winner,title,sub,restart=false){
-  const card=$('resultCard');
-  if(restart){
-    card.innerHTML=`<h2>${title}</h2><div class="sub">${sub}</div><button class="btn-continue" onclick="location.reload()">重新开始</button>`;
-  }else{
-    card.innerHTML=`<h2>${title}</h2><div class="big">+${game.pot}</div><div class="sub">${sub}</div>`;
-  }
+  $('resultCard').innerHTML = `<h2>${winner.name} 胜</h2><div class="big">+${game.pot}</div><div>牌型：${evaluate(winner.cards).name}</div><button class="btn-continue" onclick="location.reload()" style="margin-top:20px;">再来一局</button>`;
   $('resultPanel').classList.remove('hidden');
-  if(!restart)setTimeout(()=>$('resultPanel').classList.add('hidden'),2600);
 }
 
-// ==================== 操作 ====================
-// 点烟动作
-$('btnSmoke').addEventListener('click', ()=>{
-  initAudio(); if(audioCtx.state==='suspended')audioCtx.resume();
-  sfx.spark();
-  const hand = $('handView');
-  // 手往上抬一下
-  hand.style.transform = 'translateY(-20px)';
-  
-  // 生成火光
-  const spark = document.createElement('div');
-  spark.className = 'spark';
-  const rect = hand.getBoundingClientRect();
-  spark.style.left = (rect.left + rect.width/2 - 20) + 'px';
-  spark.style.top = (rect.top - 20) + 'px';
-  document.body.appendChild(spark);
-  spark.style.animation = 'spark-anim 0.3s forwards';
-  
-  setTimeout(() => {
-    spark.remove();
-    sfx.smoke();
-    // 吐烟圈
-    for(let i=0; i<3; i++){
-      setTimeout(()=>{
-        const smoke = document.createElement('div');
-        smoke.className = 'smoke';
-        smoke.style.left = (rect.left + rect.width/2 - 50 + (Math.random()*40-20)) + 'px';
-        smoke.style.top = (rect.top - 30) + 'px';
-        document.body.appendChild(smoke);
-        smoke.style.animation = 'smoke-float 2s ease-out forwards';
-        setTimeout(()=>smoke.remove(), 2000);
-      }, i * 200);
-    }
-    hand.style.transform = 'translateY(0)';
-  }, 300);
+// ==================== 操作绑定 ====================
+$('btnLook').addEventListener('click',()=>{
+  // 点击看牌不再直接翻开，而是触发刮刮乐
+  if(!humanReady || game.human.looked) return;
+  setupScratch();
+  $('btnLook').disabled = true; // 暂时禁用按钮，直到刮开
 });
 
 $('btnCall').addEventListener('click',()=>{
   if(!humanReady)return;
-  const amt=game.doCall(game.human);flyChips(0);sfx.call();log(`你 跟注 ${amt}`,'you');afterHuman();
+  game.doCall(game.human); afterHuman();
 });
 $('btnRaise').addEventListener('click',()=>{
   if(!humanReady)return;
   const opts=$('raiseOpts');opts.innerHTML='';
-  // 取消封顶后，给更多倍数选择
-  const choices=[2,3,5,10].filter(m=>game.baseBet*m<=game.human.chips).map(m=>({label:`${m}× (${game.baseBet*m})`,val:game.baseBet*m}));
-  choices.forEach(c=>{
-    const b=document.createElement('button');b.className='opt';b.textContent=c.label;
-    b.addEventListener('click',()=>{
-      $('raisePanel').classList.add('hidden');
-      const amt=game.doRaise(game.human,c.val);flyChips(0);sfx.raise();
-      log(`你 加注到 ${c.val}`,'you');afterHuman();
-    });
-    opts.appendChild(b);
+  [2,3,5].forEach(m=>{
+    if(game.baseBet*m <= game.human.chips){
+      const b=document.createElement('button');b.className='opt';b.textContent=`${m}倍 (${game.baseBet*m})`;
+      b.onclick=()=>{ $('raisePanel').classList.add('hidden'); game.doRaise(game.human,game.baseBet*m); afterHuman(); };
+      opts.appendChild(b);
+    }
   });
   $('raisePanel').classList.remove('hidden');
 });
 $('raiseCancel').addEventListener('click',()=>$('raisePanel').classList.add('hidden'));
-
-// 梭哈按钮
 $('btnAllin').addEventListener('click',()=>{
-  if(!humanReady) return;
-  if(!confirm('确定推出所有筹码梭哈吗？')) return;
-  const amt = game.doRaise(game.human, game.human.chips); 
-  game.human.allin = true;
-  flyChips(0); sfx.raise(); log(`你 推出了所有筹码！梭哈！`,'you');
+  if(!humanReady || !confirm('确定梭哈？')) return;
+  game.doRaise(game.human, game.human.chips); game.human.allin = true;
   afterHuman();
 });
-
 $('btnFold').addEventListener('click',()=>{
   if(!humanReady)return;
-  if(!confirm('确定弃牌？'))return;
-  game.doFold(game.human);sfx.fold();log('你 弃牌了','you');afterHuman();
+  game.doFold(game.human); afterHuman();
 });
 
-$('muteBtn').addEventListener('click',()=>{muted=!muted;localStorage.setItem('zjh_muted',muted?'1':'0');$('muteBtn').textContent=muted?'🔇':'🔊'});
-$('bgmBtn').addEventListener('click',()=>{initAudio();if(audioCtx.state==='suspended')audioCtx.resume();if(!bgmTimer)bgmTimer=setInterval(playBgmChord,1800);else{clearInterval(bgmTimer);bgmTimer=null}});
+// ==================== 点烟动画 ====================
+$('btnSmoke').addEventListener('click', ()=>{
+  initAudio(); if(audioCtx.state==='suspended')audioCtx.resume();
+  
+  const hand = $('handView');
+  const zippo = $('zippo');
+  const cigarTip = $('cigarTip');
+  
+  // 1. 手抬起，拿着雪茄
+  hand.style.transform = 'translateY(-40px) rotate(-10deg)';
+  
+  // 2. 出现 Zippo 并开盖
+  setTimeout(() => {
+    zippo.classList.add('open');
+    sfx.zippoOpen();
+  }, 300);
+  
+  // 3. 摩擦打火
+  setTimeout(() => {
+    sfx.zippoStrike();
+    zippo.classList.add('lit');
+  }, 800);
+  
+  // 4. 点燃雪茄
+  setTimeout(() => {
+    cigarTip.setAttribute('opacity', '1'); // 雪茄点燃
+    sfx.flame();
+  }, 1200);
+  
+  // 5. 收打火机，吐烟圈
+  setTimeout(() => {
+    zippo.classList.remove('lit');
+    zippo.classList.remove('open');
+    hand.style.transform = 'translateY(0) rotate(0)';
+    sfx.smoke();
+    
+    // 吐出 3 个烟圈
+    const rect = hand.getBoundingClientRect();
+    for(let i=0; i<3; i++){
+      setTimeout(()=>{
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke';
+        smoke.style.left = (rect.left + 20) + 'px';
+        smoke.style.top = (rect.top - 10) + 'px';
+        document.body.appendChild(smoke);
+        // 动画
+        smoke.animate([
+          { transform: 'translate(0, 0) scale(0.5)', opacity: 0.8 },
+          { transform: `translate(${Math.random()*-50}px, -100px) scale(2)`, opacity: 0 }
+        ], { duration: 2000, easing: 'ease-out' });
+        setTimeout(()=>smoke.remove(), 2000);
+      }, i * 200);
+    }
+  }, 2500);
+});
 
-async function forceLandscape(){
-  try{
-    if(document.documentElement.requestFullscreen && !document.fullscreenElement){ await document.documentElement.requestFullscreen({navigationUI:'hide'}).catch(()=>{}); }
-    if(screen.orientation && screen.orientation.lock){ await screen.orientation.lock('landscape').catch(()=>{}); }
-  }catch(e){}
-}
-
+// 启动
 $('startBtn').addEventListener('click', async ()=>{
   initAudio(); if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
-  await forceLandscape();
+  try{
+    if(document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen().catch(()=>{});
+    if(screen.orientation && screen.orientation.lock) await screen.orientation.lock('landscape').catch(()=>{});
+  }catch(e){}
   $('startOverlay').classList.add('hidden');
-  log('牌局开始。','gold');
-  if(!bgmTimer && !muted) { bgmTimer=setInterval(playBgmChord,1800); }
-  setTimeout(newRound,300);
+  newRound();
 });
+
 </script>
 </body>
 </html>
