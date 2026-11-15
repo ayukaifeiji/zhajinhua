@@ -1,0 +1,20 @@
+{
+  "name": "炸金花",
+  "short_name": "炸金花",
+  "description": "经典三张牌扑克游戏 · 单机版",
+  "lang": "zh-CN",
+  "start_url": "./zhajinhua.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#041a11",
+  "theme_color": "#08301f",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
